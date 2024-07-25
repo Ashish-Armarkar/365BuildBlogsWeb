@@ -24,7 +24,7 @@ function App() {
         ></script>
       </Helmet>
 
-      <BrowserRouter>
+      <BrowserRouter basename="/365BuildBlogsWeb">
         <Navbar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
         <div className="Main-Container">
           <Suspense fallback={<>loading...</>}>
