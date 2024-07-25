@@ -1,0 +1,8 @@
+* {
+  box-sizing: border-box;
+
+}
+
+.Main-Container {
+  margin: calc(4.375em + 1.5vw) 5% 5% 5%;
+}
