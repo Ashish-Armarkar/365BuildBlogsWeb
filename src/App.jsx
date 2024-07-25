@@ -1,16 +1,15 @@
-import { useState, Suspense, lazy  } from "react";
+import { useState, Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 
 import Navbar from "./Components/Navbar";
 import "./App.css";
 
-const HeroArea = lazy( () => import('./Components/HeroArea' ) );
-const Blogs = lazy( () => import('./Components/Blogs') );
-const UserList = lazy( () => import('./Components/UserList') );
-const UserDetails = lazy( () => import('./Components/UserDetails') );
-const PostDetails = lazy( () => import('./Components/PostDetails') );
-
+const HeroArea = lazy(() => import("./Components/HeroArea"));
+const Blogs = lazy(() => import("./Components/Blogs"));
+const UserList = lazy(() => import("./Components/UserList"));
+const UserDetails = lazy(() => import("./Components/UserDetails"));
+const PostDetails = lazy(() => import("./Components/PostDetails"));
 
 function App() {
   const [selectedTab, setSelectedTab] = useState("Home");
@@ -28,7 +27,7 @@ function App() {
       <BrowserRouter>
         <Navbar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
         <div className="Main-Container">
-          <Suspense fallback={ <>loading...</> }>
+          <Suspense fallback={<>loading...</>}>
             <Routes>
               <Route path="/" element={<HeroArea />} />
               <Route path="/blogs" element={<Blogs />} />
