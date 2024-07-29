@@ -21,9 +21,10 @@ useEffect(() => {
   
   // Update the state with the sorted posts
   setSortedPosts(postsCopy);
+    console.log(postsCopy);
 }, [posts]); 
 
-  console.log(sortedPosts);
+
 
   const usersMap = useMemo(() => {
     const usersMap = {};
