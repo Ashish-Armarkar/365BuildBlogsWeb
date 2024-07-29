@@ -1,23 +1,28 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PostsFetcher, UsersFetcher } from "./Fetches";
 import BlogsItem from "./BlogsItem";
 
+const BlogsView = ({ posts, users, refetch }) => {
+  const [sortedPosts, setSortedPosts] = useState([]);
 
-const BlogsView = ( { posts, users, refetch } ) => {
+  useEffect(() => {
+    const sorted = [...posts].sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: 'base' }));
+    setSortedPosts(sorted);
+  }, [posts]);
 
-  const usersMap = useMemo( () => {
-      const usersMap = {};
-      for( let user of users ){
-          usersMap[ user.id ] = user;
-      }
-      return usersMap;
-  }, [ users ]);
+  const usersMap = useMemo(() => {
+    const usersMap = {};
+    for (let user of users) {
+      usersMap[user.id] = user;
+    }
+    return usersMap;
+  }, [users]);
 
   return (
     <div className="container">
       <div className="d-flex justify-content-between mb-3">
         <h2>List of Blogs</h2>
-        <button className="btn btn-primary" onClick={ refetch }>
+        <button className="btn btn-primary" onClick={refetch}>
           <svg
             width="1em"
             height="1em"
@@ -35,7 +40,7 @@ const BlogsView = ( { posts, users, refetch } ) => {
         </button>
       </div>
       <div className="list-group">
-        {posts.map((post) => (
+        {sortedPosts.map((post) => (
           <BlogsItem key={post.id} post={post} users={usersMap}></BlogsItem>
         ))}
       </div>
@@ -44,28 +49,26 @@ const BlogsView = ( { posts, users, refetch } ) => {
 };
 
 const Blogs = () => {
-    return ( 
-      <PostsFetcher 
-        renderSuccess={ ( posts, postsRefetch ) => {
-          return (
-            <UsersFetcher 
-              renderSuccess={ ( users, usersRefetch  ) => (
-                <BlogsView 
-                  users={ users }
-                  posts={ posts}
-                  refetch={ () => {
-                    postsRefetch();
-                    usersRefetch();
-                  } }
-                />
-              )  
-              }
-            />
-          ) 
-          }
-        }
-      />
-    )
+  return (
+    <PostsFetcher
+      renderSuccess={(posts, postsRefetch) => {
+        return (
+          <UsersFetcher
+            renderSuccess={(users, usersRefetch) => (
+              <BlogsView
+                users={users}
+                posts={posts}
+                refetch={() => {
+                  postsRefetch();
+                  usersRefetch();
+                }}
+              />
+            )}
+          />
+        );
+      }}
+    />
+  );
 }
 
-export default Blogs;
+export default Blogs;
