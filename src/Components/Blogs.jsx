@@ -5,33 +5,35 @@ import BlogsItem from "./BlogsItem";
 const BlogsView = ({ posts, users, refetch }) => {
   const [sortedPosts, setSortedPosts] = useState([]);
 
-useEffect(() => {
+  useEffect(() => {
+    if (posts && posts.length > 0) {
+      // Create a copy of the posts array
+      const postsCopy = [...posts];
+      console.log("before sorting:", postsCopy);
 
-  const postsCopy = [...posts];
-  console.log("before", postsCopy);
-
-  postsCopy.sort((a, b) => {
-    const firstLetterA = a.title[0].toLowerCase(); 
-    const firstLetterB = b.title[0].toLowerCase();
-    
-    if (firstLetterA < firstLetterB) return -1;
-    if (firstLetterA > firstLetterB) return 1;
-    return 0; 
-  });
-  
-  // Update the state with the sorted posts
-  setSortedPosts(postsCopy);
-    console.log("After",postsCopy);
-}, [posts]); 
-
-
-
-  const usersMap = useMemo(() => {
-    const usersMap = {};
-    for (let user of users) {
-      usersMap[user.id] = user;
+      // Sort the copy based on the first letter of the title (case-insensitive)
+      postsCopy.sort((a, b) => {
+        const firstLetterA = a.title[0].toLowerCase();
+        const firstLetterB = b.title[0].toLowerCase();
+        
+        if (firstLetterA < firstLetterB) return -1;
+        if (firstLetterA > firstLetterB) return 1;
+        return 0;
+      });
+      
+      // Update the state with the sorted posts
+      setSortedPosts(postsCopy);
+      console.log("after sorting:", postsCopy);
     }
-    return usersMap;
+  }, [posts]);
+
+  // Map users by their ID for easy access
+  const usersMap = useMemo(() => {
+    const map = {};
+    for (let user of users) {
+      map[user.id] = user;
+    }
+    return map;
   }, [users]);
 
   return (
@@ -67,24 +69,22 @@ useEffect(() => {
 const Blogs = () => {
   return (
     <PostsFetcher
-      renderSuccess={(posts, postsRefetch) => {
-        return (
-          <UsersFetcher
-            renderSuccess={(users, usersRefetch) => (
-              <BlogsView
-                users={users}
-                posts={posts}
-                refetch={() => {
-                  postsRefetch();
-                  usersRefetch();
-                }}
-              />
-            )}
-          />
-        );
-      }}
+      renderSuccess={(posts, postsRefetch) => (
+        <UsersFetcher
+          renderSuccess={(users, usersRefetch) => (
+            <BlogsView
+              users={users}
+              posts={posts}
+              refetch={() => {
+                postsRefetch();
+                usersRefetch();
+              }}
+            />
+          )}
+        />
+      )}
     />
   );
 }
 
-export default Blogs;
+export default Blogs;
