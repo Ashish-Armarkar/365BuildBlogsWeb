@@ -6,13 +6,13 @@ const BlogsView = ({ posts, users, refetch }) => {
   const [sortedPosts, setSortedPosts] = useState([]);
 
 useEffect(() => {
-  // Create a copy of the posts array
+
   const postsCopy = [...posts];
   
-  // Sort the copy based on the first letter of the title (case-insensitive)
+
   postsCopy.sort((a, b) => {
-    const firstLetterA = a.title[0].toLowerCase(); // Get the first letter of title a and convert to lowercase
-    const firstLetterB = b.title[0].toLowerCase(); // Get the first letter of title b and convert to lowercase
+    const firstLetterA = a.title[0].toLowerCase(); 
+    const firstLetterB = b.title[0].toLowerCase();
     
     if (firstLetterA < firstLetterB) return -1;
     if (firstLetterA > firstLetterB) return 1;
@@ -22,6 +22,8 @@ useEffect(() => {
   // Update the state with the sorted posts
   setSortedPosts(postsCopy);
 }, [posts]); 
+
+  console.log(sortedPosts);
 
   const usersMap = useMemo(() => {
     const usersMap = {};
