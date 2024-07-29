@@ -8,7 +8,7 @@ const BlogsView = ({ posts, users, refetch }) => {
 useEffect(() => {
 
   const postsCopy = [...posts];
-  
+  console.log("before", postsCopy);
 
   postsCopy.sort((a, b) => {
     const firstLetterA = a.title[0].toLowerCase(); 
@@ -21,7 +21,7 @@ useEffect(() => {
   
   // Update the state with the sorted posts
   setSortedPosts(postsCopy);
-    console.log(postsCopy);
+    console.log("After",postsCopy);
 }, [posts]); 
 
 
