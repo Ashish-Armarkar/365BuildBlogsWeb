@@ -6,7 +6,7 @@ const BlogsView = ({ posts, users, refetch }) => {
   const [sortedPosts, setSortedPosts] = useState([]);
 
   useEffect(() => {
-    const sorted = [...posts].sort((a, b) => a[0].title.localeCompare(b[0].title, undefined, { sensitivity: 'base' }));
+    const sorted = [...posts].sort((a, b) => a.title[0].localeCompare(b.title[0], undefined, { sensitivity: 'base' }));
     setSortedPosts(sorted);
   }, [posts]);
 
